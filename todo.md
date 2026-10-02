@@ -1,4 +1,5 @@
 Phase 1
+
 - Insert Role in user schema (Admin | Officer).
 - Create a seed file and create the admin role.
 - Store password in hash, not plain text.
@@ -6,6 +7,7 @@ Phase 1
 - Implement JWT with access token for 3 days.
 
 Phase 2
+
 - Create the fe.
 - Create a landing page and the auth pages.
 - Connect fe and be.
