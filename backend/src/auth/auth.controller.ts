@@ -33,6 +33,7 @@ export class AuthController {
 
     return {
       message: 'Login successful',
+      role: user?.role,
     };
   }
 
