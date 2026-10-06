@@ -20,3 +20,28 @@ model User {
   role UserRole @default(Employee)
   createdAt DateTime @default(now())
 }
+
+enum DocumentStatus {
+  PENDING
+  PROCESSING
+  PROCESSED
+  FAILED
+}
+
+model Document {
+  id               String         @id @default(cuid())
+  title            String
+  fileUrl          String
+  mimeType         String
+  fileSize         Int?
+
+  status           DocumentStatus @default(PENDING)
+
+  processedAt      DateTime?
+  errorMessage     String?
+
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+
+  @@index([status])
+}
