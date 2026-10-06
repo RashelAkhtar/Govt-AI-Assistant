@@ -14,12 +14,18 @@ import {
 import { DocumentService } from './document.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import type { CreateDocumentDto } from './types/CreateDocumentDto';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { RolesGuard } from 'src/auth/guards/roles.guard';
+import { Roles } from 'src/auth/decorators/roles.decorator';
+import { UserRole } from 'src/generated/prisma/enums';
 
-@Controller('document')
+@Controller('/api/v1/document')
+@UseGuards(JwtAuthGuard, RolesGuard)
 export class DocumentController {
   constructor(private readonly documentService: DocumentService) {}
 
   @Post()
+  @Roles(UserRole.Admin)
   @UseInterceptors(FileInterceptor('file'))
   async createDocument(
     @Body() createDocumentDto: CreateDocumentDto,
