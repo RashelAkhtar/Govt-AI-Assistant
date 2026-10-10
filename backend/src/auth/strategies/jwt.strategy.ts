@@ -6,6 +6,14 @@ import { ConfigService } from '@nestjs/config';
 import { PrismaService } from '../../prisma/prisma.service';
 import { UserRole } from 'src/generated/prisma/enums';
 
+const cookieExtractor = (req: { cookies?: Record<string, string> } | undefined) => {
+  if (req && req.cookies && req.cookies.access_token) {
+    return req.cookies.access_token;
+  }
+
+  return null;
+};
+
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(
@@ -13,7 +21,10 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     private readonly prisma: PrismaService,
   ) {
     super({
-      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+      jwtFromRequest: ExtractJwt.fromExtractors([
+        ExtractJwt.fromAuthHeaderAsBearerToken(),
+        cookieExtractor,
+      ]),
 
       ignoreExpiration: false,
 

@@ -34,6 +34,7 @@ export class DocumentService {
     const document = await this.prisma.document.create({
       data: {
         title: createDocumentDto.title,
+        originalName: file.originalname,
         fileUrl,
         mimeType: file.mimetype,
         fileSize: file.size,
