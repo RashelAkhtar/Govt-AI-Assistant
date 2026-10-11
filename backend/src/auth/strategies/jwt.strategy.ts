@@ -6,7 +6,9 @@ import { ConfigService } from '@nestjs/config';
 import { PrismaService } from '../../prisma/prisma.service';
 import { UserRole } from 'src/generated/prisma/enums';
 
-const cookieExtractor = (req: { cookies?: Record<string, string> } | undefined) => {
+const cookieExtractor = (
+  req: { cookies?: Record<string, string> } | undefined,
+) => {
   if (req && req.cookies && req.cookies.access_token) {
     return req.cookies.access_token;
   }
