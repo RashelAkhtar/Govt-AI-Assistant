@@ -5,6 +5,7 @@ import { promises as fs } from 'fs';
 import * as path from 'path';
 import { randomUUID } from 'crypto';
 import { AiService } from 'src/ai/ai.service';
+import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 
 @Injectable()
 export class DocumentService {
@@ -17,6 +18,7 @@ export class DocumentService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly aiService: AiService,
+    private readonly cloudinaryService: CloudinaryService,
   ) {}
 
   async createDocument(
@@ -33,7 +35,10 @@ export class DocumentService {
 
     await fs.writeFile(filePath, file.buffer);
 
-    const fileUrl = `/uploads/documents/${fileName}`;
+    const uploadedFile = await this.cloudinaryService.uploadFile(file);
+
+    const fileUrl = uploadedFile.secure_url;
+    // const publicId = uploadedFile.public_id;
 
     const document = await this.prisma.document.create({
       data: {
