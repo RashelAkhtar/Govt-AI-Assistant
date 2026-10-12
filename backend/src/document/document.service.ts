@@ -1,20 +1,11 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateDocumentDto } from './types/CreateDocumentDto';
-import { promises as fs } from 'fs';
-import * as path from 'path';
-import { randomUUID } from 'crypto';
 import { AiService } from 'src/ai/ai.service';
 import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 
 @Injectable()
 export class DocumentService {
-  private readonly uploadDirectory = path.join(
-    process.cwd(),
-    'uploads',
-    'documents',
-  );
-
   constructor(
     private readonly prisma: PrismaService,
     private readonly aiService: AiService,
@@ -25,20 +16,9 @@ export class DocumentService {
     createDocumentDto: CreateDocumentDto,
     file: Express.Multer.File,
   ) {
-    await fs.mkdir(this.uploadDirectory, {
-      recursive: true,
-    });
-
-    const fileName = `${randomUUID()}.pdf`;
-
-    const filePath = path.join(this.uploadDirectory, fileName);
-
-    await fs.writeFile(filePath, file.buffer);
-
     const uploadedFile = await this.cloudinaryService.uploadFile(file);
 
     const fileUrl = uploadedFile.secure_url;
-    // const publicId = uploadedFile.public_id;
 
     const document = await this.prisma.document.create({
       data: {
