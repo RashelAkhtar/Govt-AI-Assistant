@@ -1,337 +1,187 @@
 "use client";
 
 import Link from "next/link";
+import { Inter, Plus_Jakarta_Sans } from "next/font/google";
 import {
   ArrowRight,
   ShieldCheck,
   Search,
   FileText,
-  Brain,
   Quote,
-  LockKeyhole,
   History,
-  Database,
-  Users,
-  CheckCircle2,
+  Upload,
   ChevronRight,
+  CheckCircle2,
 } from "lucide-react";
+
+const inter = Inter({ subsets: ["latin"], display: "swap" });
+const jakarta = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  weight: ["600", "700", "800"],
+  display: "swap",
+});
 
 const capabilities = [
   {
     icon: Search,
     title: "Authoritative Search",
     description:
-      "Find relevant rules, circulars, office orders, precedents and approved government documents from a single knowledge interface.",
+      "Find rules, circulars, office orders and approved documents through a single, simple question box.",
   },
   {
     icon: Quote,
     title: "Traceable Answers",
     description:
-      "Every generated response can be linked back to the underlying approved source so officials can verify the information.",
+      "Every response links back to the approved source passage so officials can verify it instantly.",
+  },
+  {
+    icon: Upload,
+    title: "Admin Document Management",
+    description:
+      "Administrators upload and maintain the approved knowledge base that powers every answer.",
   },
   {
     icon: FileText,
     title: "Document Intelligence",
     description:
-      "Summarise documents, extract structured information and identify relevant sections without manually reviewing every page.",
-  },
-  {
-    icon: Brain,
-    title: "Drafting Assistance",
-    description:
-      "Assist with routine notes, orders and procedural drafts while keeping the final decision and approval with the authorised official.",
+      "Summarise long documents and pull out the relevant sections without reading every page.",
   },
   {
     icon: ShieldCheck,
     title: "Role-Based Access",
     description:
-      "Control access to knowledge, documents and workflows according to the role and authority of each user.",
+      "Control who can see which documents and workflows based on role and authority.",
   },
   {
     icon: History,
-    title: "Audit & Traceability",
+    title: "Audit Trail",
     description:
-      "Maintain an auditable record of queries, generated outputs, sources and knowledge-base changes.",
+      "Queries, answers, sources and knowledge-base changes are recorded for accountability.",
   },
 ];
 
 const workflow = [
   {
     number: "01",
-    title: "Ask",
-    description:
-      "An authorised official asks a procedural question or requests assistance with a government document.",
+    title: "Upload",
+    description: "Admins add approved government documents to the knowledge base.",
   },
   {
     number: "02",
-    title: "Retrieve",
-    description:
-      "The system searches approved government knowledge sources and identifies relevant documents and passages.",
+    title: "Ask",
+    description: "Employees ask procedural questions in plain language.",
   },
   {
     number: "03",
-    title: "Generate",
-    description:
-      "The assistant generates a response, summary, extraction or draft grounded in the retrieved sources.",
+    title: "Retrieve",
+    description: "The system finds the most relevant passages from approved sources.",
   },
   {
     number: "04",
     title: "Verify",
-    description:
-      "The official reviews the answer and its source references before using or approving the output.",
+    description: "Answers come with source references, ready for human review.",
   },
-];
-
-const principles = [
-  "Authorised users only",
-  "Approved knowledge sources",
-  "Source-grounded responses",
-  "Human review before action",
-  "Auditable interactions",
-  "Government-controlled data",
 ];
 
 export default function Home() {
   return (
-    <main className="min-h-100 bg-[#f7f9fc] text-slate-900">
+    <main
+      className={`${inter.className} min-h-screen w-full bg-white text-slate-900 antialiased`}
+    >
       {/* HERO */}
-      <section className="relative overflow-hidden border-b border-slate-200 bg-white">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(30,64,175,0.08),transparent_35%)]" />
-
-        <div className="relative mx-auto grid max-w-7xl gap-14 px-6 py-20 lg:grid-cols-[1.15fr_0.85fr] lg:px-8 lg:py-28">
-          <div className="flex flex-col justify-center">
-            <div className="mb-6 inline-flex w-fit items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-semibold text-slate-600">
-              <span className="h-2 w-2 rounded-full bg-emerald-500" />
-              Secure • Source-Grounded • Human-Controlled
-            </div>
-
-            <h1 className="max-w-4xl text-4xl font-bold leading-[1.08] tracking-tight text-slate-950 sm:text-5xl lg:text-6xl">
-              Government knowledge,
-              <span className="block text-blue-700">
-                available when officials need it.
-              </span>
-            </h1>
-
-            <p className="mt-7 max-w-2xl text-lg leading-8 text-slate-600">
-              A secure AI assistant for authorised government officials to
-              search approved knowledge, understand documents, answer routine
-              procedural questions and prepare drafts — with every output
-              traceable to its source.
-            </p>
-
-            <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-              <Link
-                href="/auth"
-                className="inline-flex items-center justify-center gap-2 rounded-lg bg-blue-700 px-6 py-3.5 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-800"
-              >
-                Access Assistant
-                <ArrowRight size={17} />
-              </Link>
-
-              <a
-                href="#capabilities"
-                className="inline-flex items-center justify-center gap-2 rounded-lg border border-slate-300 bg-white px-6 py-3.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
-              >
-                Explore Capabilities
-                <ChevronRight size={17} />
-              </a>
-            </div>
-
-            <div className="mt-10 flex flex-wrap gap-x-7 gap-y-3 text-xs font-medium text-slate-500">
-              <span className="flex items-center gap-2">
-                <CheckCircle2 size={15} className="text-emerald-600" />
-                Approved sources
-              </span>
-              <span className="flex items-center gap-2">
-                <CheckCircle2 size={15} className="text-emerald-600" />
-                Role-based access
-              </span>
-              <span className="flex items-center gap-2">
-                <CheckCircle2 size={15} className="text-emerald-600" />
-                Human verification
-              </span>
-            </div>
+      <section className="w-full bg-white">
+        <div className="flex w-full flex-col items-center px-6 pb-28 pt-24 text-center lg:px-16 lg:pb-36 lg:pt-32 xl:px-24">
+          <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-blue-100 bg-blue-50 px-4 py-1.5 text-xs font-semibold text-blue-700">
+            <span className="h-2 w-2 rounded-full bg-blue-600" />
+            Secure AI Knowledge Assistant for Government
           </div>
 
-          {/* HERO PRODUCT PANEL */}
-          <div className="flex items-center">
-            <div className="w-full rounded-2xl border border-slate-200 bg-slate-950 p-3 shadow-2xl shadow-slate-300/30">
-              <div className="rounded-xl bg-white">
-                <div className="flex items-center justify-between border-b border-slate-200 px-5 py-4">
-                  <div>
-                    <p className="text-sm font-semibold text-slate-900">
-                      Government Knowledge Assistant
-                    </p>
-                    <p className="mt-0.5 text-xs text-slate-500">
-                      Authorised workspace
-                    </p>
-                  </div>
+          <h1
+            className={`${jakarta.className} w-full text-5xl font-extrabold leading-[1.05] tracking-tight text-slate-950 sm:text-6xl lg:text-7xl xl:text-8xl`}
+          >
+            Government knowledge,
+            <span className="block text-blue-600">
+              answered in seconds.
+            </span>
+          </h1>
 
-                  <div className="flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-[10px] font-semibold text-emerald-700">
-                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-                    Secure
-                  </div>
-                </div>
+          <p className="mt-8 w-full max-w-5xl text-lg leading-8 text-slate-600 sm:text-xl sm:leading-9">
+            Administrators upload approved documents. Employees ask questions
+            in plain language and receive accurate answers, each one traceable
+            to its source.
+          </p>
 
-                <div className="space-y-5 p-5">
-                  <div className="rounded-xl bg-slate-50 p-4">
-                    <p className="text-xs font-semibold text-slate-500">
-                      QUERY
-                    </p>
-                    <p className="mt-2 text-sm leading-6 text-slate-800">
-                      What procedure applies when processing a service-related
-                      administrative request?
-                    </p>
-                  </div>
+          <div className="mt-12 flex flex-col gap-4 sm:flex-row">
+            <Link
+              href="/auth"
+              className="group inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-8 py-4 text-base font-semibold text-white shadow-lg shadow-blue-600/25 transition duration-200 hover:-translate-y-1 hover:bg-blue-700 hover:shadow-xl hover:shadow-blue-600/30"
+            >
+              Get Started
+              <ArrowRight
+                size={18}
+                className="transition-transform duration-200 group-hover:translate-x-1"
+              />
+            </Link>
 
-                  <div>
-                    <div className="mb-3 flex items-center gap-2">
-                      <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-blue-100 text-blue-700">
-                        <Brain size={15} />
-                      </div>
-                      <p className="text-xs font-semibold text-slate-500">
-                        GROUNDED RESPONSE
-                      </p>
-                    </div>
-
-                    <p className="text-sm leading-6 text-slate-700">
-                      The applicable procedure is based on the relevant service
-                      rules and the competent authority&apos;s approval
-                      requirements. The following approved documents contain
-                      the relevant provisions...
-                    </p>
-                  </div>
-
-                  <div className="rounded-xl border border-blue-100 bg-blue-50/60 p-4">
-                    <div className="flex items-start gap-3">
-                      <Quote
-                        size={16}
-                        className="mt-0.5 shrink-0 text-blue-700"
-                      />
-
-                      <div>
-                        <p className="text-xs font-bold text-blue-900">
-                          SOURCES
-                        </p>
-
-                        <p className="mt-1 text-xs leading-5 text-blue-800">
-                          Office Order • Service Rules • Administrative
-                          Circular
-                        </p>
-
-                        <button className="mt-2 text-xs font-semibold text-blue-700 hover:underline">
-                          View source passages →
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <a
+              href="#capabilities"
+              className="group inline-flex items-center justify-center gap-2 rounded-xl border border-blue-200 bg-white px-8 py-4 text-base font-semibold text-blue-700 transition duration-200 hover:-translate-y-1 hover:border-blue-600 hover:bg-blue-50"
+            >
+              Explore Capabilities
+              <ChevronRight
+                size={18}
+                className="transition-transform duration-200 group-hover:translate-x-1"
+              />
+            </a>
           </div>
-        </div>
-      </section>
 
-      {/* PROBLEM */}
-      <section className="border-b border-slate-200 bg-slate-50">
-        <div className="mx-auto max-w-7xl px-6 py-20 lg:px-8">
-          <div className="grid gap-12 lg:grid-cols-[0.8fr_1.2fr]">
-            <div>
-              <p className="text-xs font-bold uppercase tracking-[0.2em] text-blue-700">
-                The challenge
-              </p>
-
-              <h2 className="mt-4 text-3xl font-bold tracking-tight text-slate-950 sm:text-4xl">
-                From scattered information to a trusted first response.
-              </h2>
-            </div>
-
-            <div className="space-y-6">
-              <p className="text-lg leading-8 text-slate-600">
-                Officials often need to search across manuals, circulars,
-                precedents, portals and documents before they can answer a
-                routine procedural question or prepare a draft.
-              </p>
-
-              <p className="text-lg leading-8 text-slate-600">
-                GOVASSIST brings approved government knowledge into one secure
-                interface while preserving the ability to verify where an
-                answer came from.
-              </p>
-
-              <div className="grid gap-4 sm:grid-cols-3">
-                <div className="rounded-xl border border-slate-200 bg-white p-5">
-                  <Database className="text-blue-700" size={22} />
-                  <p className="mt-4 text-sm font-bold text-slate-900">
-                    One knowledge layer
-                  </p>
-                  <p className="mt-2 text-xs leading-5 text-slate-500">
-                    Approved sources made easier to find.
-                  </p>
-                </div>
-
-                <div className="rounded-xl border border-slate-200 bg-white p-5">
-                  <Quote className="text-blue-700" size={22} />
-                  <p className="mt-4 text-sm font-bold text-slate-900">
-                    Visible evidence
-                  </p>
-                  <p className="mt-2 text-xs leading-5 text-slate-500">
-                    Answers remain connected to source material.
-                  </p>
-                </div>
-
-                <div className="rounded-xl border border-slate-200 bg-white p-5">
-                  <Users className="text-blue-700" size={22} />
-                  <p className="mt-4 text-sm font-bold text-slate-900">
-                    Official remains in control
-                  </p>
-                  <p className="mt-2 text-xs leading-5 text-slate-500">
-                    AI assists; authorised officials decide.
-                  </p>
-                </div>
-              </div>
-            </div>
+          <div className="mt-14 flex flex-wrap justify-center gap-x-8 gap-y-3 text-sm font-medium text-slate-500">
+            {["Approved sources only", "Role-based access", "Human verification"].map(
+              (item) => (
+                <span key={item} className="flex items-center gap-2">
+                  <CheckCircle2 size={17} className="text-blue-600" />
+                  {item}
+                </span>
+              )
+            )}
           </div>
         </div>
       </section>
 
       {/* CAPABILITIES */}
-      <section id="capabilities" className="bg-white">
-        <div className="mx-auto max-w-7xl px-6 py-20 lg:px-8 lg:py-24">
-          <div className="max-w-2xl">
-            <p className="text-xs font-bold uppercase tracking-[0.2em] text-blue-700">
+      <section
+        id="capabilities"
+        className="w-full border-t border-slate-200 bg-white"
+      >
+        <div className="w-full px-6 py-24 lg:px-16 xl:px-24">
+          <div className="w-full text-center">
+            <p className="text-sm font-bold uppercase tracking-[0.2em] text-blue-600">
               Capabilities
             </p>
-
-            <h2 className="mt-4 text-3xl font-bold tracking-tight text-slate-950 sm:text-4xl">
-              Built around real government workflows.
+            <h2
+              className={`${jakarta.className} mt-4 text-4xl font-extrabold tracking-tight text-slate-950 sm:text-5xl`}
+            >
+              Everything officials need, nothing they don&apos;t.
             </h2>
-
-            <p className="mt-5 text-lg leading-8 text-slate-600">
-              The assistant is designed to reduce repetitive information
-              handling without removing the official from the decision-making
-              process.
-            </p>
           </div>
 
-          <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-16 grid w-full gap-6 md:grid-cols-2 xl:grid-cols-3">
             {capabilities.map((item) => {
               const Icon = item.icon;
-
               return (
                 <div
                   key={item.title}
-                  className="group rounded-2xl border border-slate-200 bg-white p-7 transition hover:-translate-y-0.5 hover:border-blue-200 hover:shadow-lg hover:shadow-slate-200/40"
+                  className="group rounded-2xl border border-slate-200 bg-white p-8 transition duration-300 hover:-translate-y-2 hover:border-blue-300 hover:shadow-xl hover:shadow-blue-600/10"
                 >
-                  <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-50 text-blue-700">
-                    <Icon size={21} />
+                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 text-blue-600 transition duration-300 group-hover:bg-blue-600 group-hover:text-white">
+                    <Icon size={22} />
                   </div>
-
-                  <h3 className="mt-6 text-lg font-bold text-slate-950">
+                  <h3
+                    className={`${jakarta.className} mt-6 text-xl font-bold text-slate-950`}
+                  >
                     {item.title}
                   </h3>
-
-                  <p className="mt-3 text-sm leading-6 text-slate-600">
+                  <p className="mt-3 text-base leading-7 text-slate-600">
                     {item.description}
                   </p>
                 </div>
@@ -341,41 +191,40 @@ export default function Home() {
         </div>
       </section>
 
-      {/* WORKFLOW */}
-      <section id="workflow" className="bg-slate-950 text-white">
-        <div className="mx-auto max-w-7xl px-6 py-20 lg:px-8 lg:py-24">
-          <div className="max-w-2xl">
-            <p className="text-xs font-bold uppercase tracking-[0.2em] text-blue-300">
+      {/* HOW IT WORKS */}
+      <section
+        id="how-it-works"
+        className="w-full border-t border-slate-200 bg-white"
+      >
+        <div className="w-full px-6 py-24 lg:px-16 xl:px-24">
+          <div className="w-full text-center">
+            <p className="text-sm font-bold uppercase tracking-[0.2em] text-blue-600">
               How it works
             </p>
-
-            <h2 className="mt-4 text-3xl font-bold tracking-tight sm:text-4xl">
-              Retrieval first. Generation second. Verification always.
+            <h2
+              className={`${jakarta.className} mt-4 text-4xl font-extrabold tracking-tight text-slate-950 sm:text-5xl`}
+            >
+              Retrieve first. Generate second. Verify always.
             </h2>
-
-            <p className="mt-5 text-lg leading-8 text-slate-400">
-              The system is designed to ground generated responses in
-              approved source material before presenting them to an official.
-            </p>
           </div>
 
-          <div className="mt-14 grid gap-0 border-l border-slate-700 md:grid-cols-4 md:border-l-0">
-            {workflow.map((item, index) => (
+          <div className="mt-16 grid w-full gap-6 md:grid-cols-2 lg:grid-cols-4">
+            {workflow.map((item) => (
               <div
                 key={item.number}
-                className={`relative border-b border-slate-800 p-7 md:border-b-0 ${
-                  index !== workflow.length - 1
-                    ? "md:border-r md:border-slate-800"
-                    : ""
-                }`}
+                className="group rounded-2xl border border-slate-200 bg-white p-8 transition duration-300 hover:-translate-y-2 hover:border-blue-300 hover:shadow-xl hover:shadow-blue-600/10"
               >
-                <span className="text-sm font-bold text-blue-400">
+                <span
+                  className={`${jakarta.className} text-4xl font-extrabold text-blue-600/30 transition group-hover:text-blue-600`}
+                >
                   {item.number}
                 </span>
-
-                <h3 className="mt-5 text-xl font-bold">{item.title}</h3>
-
-                <p className="mt-3 text-sm leading-6 text-slate-400">
+                <h3
+                  className={`${jakarta.className} mt-4 text-2xl font-bold text-slate-950`}
+                >
+                  {item.title}
+                </h3>
+                <p className="mt-3 text-base leading-7 text-slate-600">
                   {item.description}
                 </p>
               </div>
@@ -384,129 +233,39 @@ export default function Home() {
         </div>
       </section>
 
-      {/* SECURITY */}
-      <section id="security" className="border-b border-slate-200 bg-white">
-        <div className="mx-auto max-w-7xl px-6 py-20 lg:px-8 lg:py-24">
-          <div className="grid gap-14 lg:grid-cols-2 lg:items-center">
-            <div>
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-slate-900 text-white">
-                <LockKeyhole size={23} />
-              </div>
-
-              <h2 className="mt-7 text-3xl font-bold tracking-tight text-slate-950 sm:text-4xl">
-                Designed for controlled government use.
-              </h2>
-
-              <p className="mt-5 text-lg leading-8 text-slate-600">
-                Security and traceability are part of the workflow rather than
-                features added after the AI system is built.
-              </p>
-
-              <p className="mt-4 text-sm leading-6 text-slate-500">
-                Pilot deployments can be limited to clearly bounded,
-                non-sensitive datasets and expanded only after appropriate
-                validation, security and compliance review.
-              </p>
-            </div>
-
-            <div className="rounded-2xl border border-slate-200 bg-slate-50 p-7">
-              <div className="grid gap-4 sm:grid-cols-2">
-                {principles.map((principle) => (
-                  <div
-                    key={principle}
-                    className="flex items-center gap-3 rounded-xl border border-slate-200 bg-white px-4 py-4"
-                  >
-                    <CheckCircle2
-                      size={18}
-                      className="shrink-0 text-emerald-600"
-                    />
-                    <span className="text-sm font-semibold text-slate-700">
-                      {principle}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* HUMAN CONTROL */}
-      <section className="bg-blue-50">
-        <div className="mx-auto max-w-5xl px-6 py-20 text-center lg:px-8">
-          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-blue-700 text-white">
-            <Users size={23} />
-          </div>
-
-          <h2 className="mt-6 text-3xl font-bold tracking-tight text-slate-950 sm:text-4xl">
-            AI assists. Officials decide.
-          </h2>
-
-          <p className="mx-auto mt-5 max-w-2xl text-lg leading-8 text-slate-600">
-            GOVASSIST is designed as a decision-support and knowledge
-            retrieval system, not an autonomous decision-maker. Generated
-            outputs remain subject to review, verification and approval by
-            authorised officials.
-          </p>
-
-          <div className="mt-8 flex flex-wrap justify-center gap-3">
-            <span className="rounded-full border border-blue-200 bg-white px-4 py-2 text-xs font-semibold text-slate-600">
-              Source-grounded
-            </span>
-            <span className="rounded-full border border-blue-200 bg-white px-4 py-2 text-xs font-semibold text-slate-600">
-              Human reviewed
-            </span>
-            <span className="rounded-full border border-blue-200 bg-white px-4 py-2 text-xs font-semibold text-slate-600">
-              Auditable
-            </span>
-            <span className="rounded-full border border-blue-200 bg-white px-4 py-2 text-xs font-semibold text-slate-600">
-              Role controlled
-            </span>
-          </div>
-        </div>
-      </section>
-
       {/* CTA */}
-      <section className="bg-slate-950">
-        <div className="mx-auto max-w-7xl px-6 py-20 lg:px-8">
-          <div className="flex flex-col items-start justify-between gap-8 md:flex-row md:items-center">
-            <div>
-              <p className="text-xs font-bold uppercase tracking-[0.2em] text-blue-400">
-                Pilot access
-              </p>
-
-              <h2 className="mt-3 text-3xl font-bold tracking-tight text-white">
-                Put approved government knowledge within reach.
-              </h2>
-
-              <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-400">
-                Access the secure assistant and explore how source-grounded AI
-                can support routine government workflows.
-              </p>
-            </div>
-
-            <Link
-              href="/auth"
-              className="inline-flex shrink-0 items-center gap-2 rounded-lg bg-white px-6 py-3.5 text-sm font-bold text-slate-950 transition hover:bg-slate-100"
-            >
-              Sign in to continue
-              <ArrowRight size={17} />
-            </Link>
-          </div>
+      <section className="w-full border-t border-slate-200 bg-white">
+        <div className="flex w-full flex-col items-center px-6 py-24 text-center lg:px-16 xl:px-24">
+          <h2
+            className={`${jakarta.className} w-full text-4xl font-extrabold tracking-tight text-slate-950 sm:text-5xl lg:text-6xl`}
+          >
+            AI assists. <span className="text-blue-600">Officials decide.</span>
+          </h2>
+          <p className="mt-6 w-full max-w-4xl text-lg leading-8 text-slate-600">
+            Sign in to search approved knowledge and get source-backed answers
+            for your everyday work.
+          </p>
+          <Link
+            href="/auth"
+            className="group mt-10 inline-flex items-center gap-2 rounded-xl bg-blue-600 px-9 py-4 text-base font-semibold text-white shadow-lg shadow-blue-600/25 transition duration-200 hover:-translate-y-1 hover:bg-blue-700 hover:shadow-xl hover:shadow-blue-600/30"
+          >
+            Sign in to continue
+            <ArrowRight
+              size={18}
+              className="transition-transform duration-200 group-hover:translate-x-1"
+            />
+          </Link>
         </div>
       </section>
 
       {/* FOOTER */}
-      <footer className="border-t border-slate-800 bg-slate-950">
-        <div className="mx-auto flex max-w-7xl flex-col gap-4 px-6 py-7 text-xs text-slate-500 sm:flex-row sm:items-center sm:justify-between lg:px-8">
-          <div className="flex items-center gap-2">
-            <ShieldCheck size={16} />
-            <span>Government Knowledge Assistant</span>
+      <footer className="w-full border-t border-slate-200 bg-white">
+        <div className="flex w-full flex-col gap-3 px-6 py-8 text-sm text-slate-500 sm:flex-row sm:items-center sm:justify-between lg:px-16 xl:px-24">
+          <div className="flex items-center gap-2 font-semibold text-slate-700">
+            <ShieldCheck size={17} className="text-blue-600" />
+            GOVASSIST
           </div>
-
-          <p>
-            Designed for authorised users and bounded pilot deployments.
-          </p>
+          <p>Designed for authorised users and bounded pilot deployments.</p>
         </div>
       </footer>
     </main>
