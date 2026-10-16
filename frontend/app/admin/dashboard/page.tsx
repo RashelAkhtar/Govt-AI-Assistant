@@ -86,8 +86,8 @@ export default function AdminDashboard() {
         footer={null}
         centered
         width={640}
-        destroyOnClose
-        maskClosable={false}
+        destroyOnHidden
+        mask={{ closable: false }}
         title={
           <div className="flex items-center gap-4 pb-2">
             <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 text-blue-600">

@@ -14,6 +14,8 @@ import {
   User,
 } from "lucide-react";
 import { useAiChatMutation } from "@/lib/services/aiApi";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -44,8 +46,6 @@ const suggestions = [
   },
 ];
 
-// The API may return a plain string or an object. Pull out readable text
-// (and sources, if the backend sends them) without breaking either shape.
 function parseReply(data: unknown): { content: string; sources?: string[] } {
   if (typeof data === "string") return { content: data };
 
@@ -56,26 +56,28 @@ function parseReply(data: unknown): { content: string; sources?: string[] } {
     ) as string | undefined;
 
     const rawSources = d.sources ?? d.references;
-    const sources = Array.isArray(rawSources)
+    const sourceLabels = Array.isArray(rawSources)
       ? rawSources
-          .map((s) =>
-            typeof s === "string"
-              ? s
-              : s && typeof s === "object"
-              ? String(
-                  (s as Record<string, unknown>).title ??
-                    (s as Record<string, unknown>).name ??
-                    (s as Record<string, unknown>).source ??
-                    ""
-                )
-              : ""
-          )
+          .map((source) => {
+            if (typeof source === "string") return source.trim();
+            if (!source || typeof source !== "object") return "";
+
+            const item = source as Record<string, unknown>;
+            return String(
+              item.title ?? item.filename ?? item.name ?? item.source ?? ""
+            ).trim();
+          })
           .filter(Boolean)
-      : undefined;
+      : [];
+
+    // One chip per source document, even when retrieval returns several chunks.
+    const sources = [...new Map(
+      sourceLabels.map((label) => [label.toLocaleLowerCase(), label])
+    ).values()];
 
     return {
       content: text ?? JSON.stringify(data, null, 2),
-      sources: sources?.length ? sources : undefined,
+      sources: sources.length ? sources : undefined,
     };
   }
 
@@ -83,9 +85,7 @@ function parseReply(data: unknown): { content: string; sources?: string[] } {
 }
 
 type ChatBotProps = {
-  /** Height/size classes for the outer box. Defaults to full page height below the navbar. */
   className?: string;
-  /** Smaller headings and a single-column layout, for use inside a card. */
   compact?: boolean;
 };
 
@@ -105,7 +105,6 @@ export default function ChatBot({
     bottomRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
   }, [messages, isLoading]);
 
-  // Auto-grow the textarea up to a max height.
   useEffect(() => {
     const el = textareaRef.current;
     if (!el) return;
@@ -124,7 +123,6 @@ export default function ChatBot({
     setQuestion("");
 
     try {
-      // ChatDto { question: string }
       const data = await chat({ question: trimmed }).unwrap();
       const reply = parseReply(data);
       setMessages((prev) => [
@@ -145,7 +143,7 @@ export default function ChatBot({
     }
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     send(question);
   };
@@ -255,10 +253,18 @@ export default function ChatBot({
                           : "border-slate-200 bg-white text-slate-800 shadow-sm"
                       }`}
                     >
-                      {m.content}
+                      {m.isError ? (
+                        m.content
+                      ) : (
+                        <div className="prose prose-slate max-w-none break-words prose-p:my-2 prose-headings:my-3 prose-ul:my-2 prose-ol:my-2 prose-li:my-0 prose-a:text-blue-700">
+                          <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                            {m.content}
+                          </ReactMarkdown>
+                        </div>
+                      )}
                     </div>
 
-                    {m.sources && (
+                    {m.sources && m.sources.length > 0 && (
                       <div className="mt-3 flex flex-wrap items-center gap-2">
                         <span className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-blue-700">
                           <Quote size={13} />
