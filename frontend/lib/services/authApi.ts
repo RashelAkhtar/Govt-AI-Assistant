@@ -11,10 +11,12 @@ export type LoginUserDto = {
   role?: UserRole;
 };
 
+const api = process.env.NEXT_PUBLIC_API_URL;
+
 export const authApi = createApi({
     reducerPath: 'authApi',
     baseQuery: fetchBaseQuery({ 
-        baseUrl: 'http://localhost:4000/api/v1/auth',
+        baseUrl: `${api}/auth`,
         credentials: 'include',
     }),
     endpoints: (builder) => ({
